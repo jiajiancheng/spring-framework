@@ -511,6 +511,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Prepare this context for refreshing.
 			prepareRefresh();
 
+			// 这里是在子类中启动refreshBeanFactory()的地方
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -518,30 +519,40 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareBeanFactory(beanFactory);
 
 			try {
+				// 设置BeanFactory的后置处理
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
+				// 调用BeanFactory的后处理器，这些后处理器是在Bean定义中向容器注册的
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
+				// 注册Bean的后处理器，在Bean创建过程中调用。
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
+				// 对上下文中的消息源进行初始化
 				// Initialize message source for this context.
 				initMessageSource();
 
+				// 初始化上下文中的事件机制
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
+				// 初始化其他的特殊Bean
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				// 检查监听Bean并且将这些Bean向容器注册
 				// Check for listener beans and register them.
 				registerListeners();
 
+				// 实例化所有的(non-lazy-init)单件
+				// 这里是对lazy-init属性进行处理的地方
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
+				// 发布容器事件，结束Refresh过程
 				// Last step: publish corresponding event.
 				finishRefresh();
 			}
@@ -552,9 +563,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 							"cancelling refresh attempt: " + ex);
 				}
 
+				// 为防止Bean资源占用，在异常处理中，销毁已经在前面过程中生成的单件Bean
 				// Destroy already created singletons to avoid dangling resources.
 				destroyBeans();
 
+				// 重置'active'标志
 				// Reset 'active' flag.
 				cancelRefresh(ex);
 

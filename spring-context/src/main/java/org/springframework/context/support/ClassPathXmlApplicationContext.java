@@ -74,6 +74,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 这个构造函数的configLocation包含的是BeanDefinition所在的文件路径
 	 * Create a new ClassPathXmlApplicationContext, loading the definitions
 	 * from the given XML file and automatically refreshing the context.
 	 * @param configLocation resource location
@@ -84,6 +85,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 这个构造函数允许configLocation包含多个BeanDefinition的文件路径
 	 * Create a new ClassPathXmlApplicationContext, loading the definitions
 	 * from the given XML files and automatically refreshing the context.
 	 * @param configLocations array of resource locations
@@ -94,6 +96,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 这个构造函数在允许configLocation包含多个BeanDefinition的文件路径的同时，还允许指定自己的双亲IoC容器
 	 * Create a new ClassPathXmlApplicationContext with the given parent,
 	 * loading the definitions from the given XML files and automatically
 	 * refreshing the context.
@@ -120,6 +123,8 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 在对象的初始化过程中，调用refresh函数载入BeanDefinition
+	 * 这个refresh启动了BeanDefinition的载入过程，我们会在下面进行详细分析
 	 * Create a new ClassPathXmlApplicationContext with the given parent,
 	 * loading the definitions from the given XML files.
 	 * @param configLocations array of resource locations

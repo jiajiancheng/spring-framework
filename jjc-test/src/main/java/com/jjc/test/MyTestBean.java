@@ -1,4 +1,4 @@
-package com.jjc;
+package com.jjc.test;
 
 import org.springframework.beans.factory.InitializingBean;
 

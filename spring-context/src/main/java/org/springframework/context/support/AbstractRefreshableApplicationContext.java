@@ -118,14 +118,18 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		//这里判断，如果已经建立了BeanFactory，则销毁并关闭该BeanFactory
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
+		//这里是创建并设置持有的DefaultListableBeanFactor的地方同时调用
+		//loadBeanDefinitions再载入BeanDefinition的信息
 		try {
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
+			// 启动对BeanDefinitions的载入
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
@@ -183,6 +187,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
+	 * 这就是在上下文中创建DefaultListableBeanFactory的地方，
+	 * 而getInternalParentBeanFactory()的具体实现可以
+	 * 参看AbstractApplicationContext中的实现，会根据容器已有的双亲IoC容器的信息来生成
+	 * DefaultListableBeanFactory的双亲IoC容器
+	 *
 	 * Create an internal bean factory for this context.
 	 * Called for each {@link #refresh()} attempt.
 	 * <p>The default implementation creates a
@@ -224,6 +233,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
+	 * 这里是使用BeanDefinitionReader载入Bean定义的地方，因为允许有多种载入方式，
+	 * 虽然用得最多的是XML定义的形式，这里通过一个抽象函数把具体的实现委托给子类来完成
+	 *
 	 * Load bean definitions into the given bean factory, typically through
 	 * delegating to one or more bean definition readers.
 	 * @param beanFactory the bean factory to load bean definitions into

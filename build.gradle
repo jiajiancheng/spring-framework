@@ -1128,6 +1128,14 @@ project("spring-framework-bom") {
 	}
 }
 
+project("jjc-test") {
+	dependencies {
+		compile(project(":spring-beans"))
+		testCompile(project(":spring-context"))
+		testCompile("junit:junit:${junitVersion}")
+	}
+}
+
 sonarqube {
 	properties {
 		property "sonar.projectName", "Spring Framework"

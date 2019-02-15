@@ -75,6 +75,8 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 	}
 
 	/**
+	 * 这个构造函数的configLocation包含的是BeanDefinition所在的文件路径
+	 *
 	 * Create a new FileSystemXmlApplicationContext, loading the definitions
 	 * from the given XML file and automatically refreshing the context.
 	 * @param configLocation file path
@@ -85,6 +87,7 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 	}
 
 	/**
+	 * 这个构造函数允许configLocation包含多个BeanDefinition的文件路径
 	 * Create a new FileSystemXmlApplicationContext, loading the definitions
 	 * from the given XML files and automatically refreshing the context.
 	 * @param configLocations array of file paths
@@ -95,6 +98,8 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 	}
 
 	/**
+	 * 这个构造函数在允许configLocation包含多个BeanDefinition的文件路径的同时，还允许指定自己的双亲IoC容器
+	 *
 	 * Create a new FileSystemXmlApplicationContext with the given parent,
 	 * loading the definitions from the given XML files and automatically
 	 * refreshing the context.
@@ -121,6 +126,9 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 	}
 
 	/**
+	 * 在对象的初始化过程中，调用refresh函数载入BeanDefinition
+	 * 这个refresh启动了BeanDefinition的载入过程，我们会在下面进行详细分析
+	 *
 	 * Create a new FileSystemXmlApplicationContext with the given parent,
 	 * loading the definitions from the given XML files.
 	 * @param configLocations array of file paths
@@ -137,12 +145,18 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// 这里调用容器的refresh，是载入BeanDefinition的入口
 			refresh();
 		}
 	}
 
 
 	/**
+	 * 这是应用于文件系统中Resource的实现，通过构造一个FileSystemResource来得到一个在文件
+	 * 系统中定位的BeanDefinition
+	 * 这个getResourceByPath是在BeanDefinitionReader的loadBeanDefintion中被调用的
+	 * loadBeanDefintion采用了模板模式，具体的定位实现实际上是由各个子类来完成的
+	 *
 	 * Resolve resource paths as file system paths.
 	 * <p>Note: Even if a given path starts with a slash, it will get
 	 * interpreted as relative to the current VM working directory.

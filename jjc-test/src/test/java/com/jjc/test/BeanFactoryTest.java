@@ -1,15 +1,17 @@
-package com.jjc;
+package com.jjc.test;
 
+import com.jjc.test.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class BeanFactoryTest {
 
     @Test
     public void testSimpleLoad() {
-        BeanFactory beanFactory = new ClassPathXmlApplicationContext("com/jjc/beanFactoryTest.xml");
+//        BeanFactory beanFactory = new ClassPathXmlApplicationContext("com/jjc/test/beanFactoryTest.xml");
+        BeanFactory beanFactory = new FileSystemXmlApplicationContext("K:\\workspace\\study\\spring-framework\\jjc-test\\src\\main\\resources\\com\\jjc\\test\\beanFactoryTest.xml");
 //        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
 
 //        ClassPathResource resource = new ClassPathResource("importTest.xml");
@@ -21,6 +23,13 @@ public class BeanFactoryTest {
         Assert.assertEquals(myTestBean.getName(), "init");
 //        Assert.assertEquals(myTestBean.getBirthday(), DateUtils.toDate(LocalDate.of(2018, 11, 19)));
 //        Assert.assertEquals(myTestBean.getCreateDate(), LocalDate.of(2018, 11, 19));
+    }
+
+    @Test
+    public void testAddUser(){
+        BeanFactory beanFactory = new FileSystemXmlApplicationContext("K:\\workspace\\study\\spring-framework\\jjc-test\\src\\main\\resources\\com\\jjc\\test\\beanFactoryTest.xml");
+        UserService userService = (UserService) beanFactory.getBean("userService");
+        userService.add(null);
     }
 
 }
