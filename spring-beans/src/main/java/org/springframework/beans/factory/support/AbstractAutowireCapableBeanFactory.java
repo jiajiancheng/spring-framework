@@ -514,6 +514,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
+		// -------------------------------    1    -----------------------------------
 		// 这里是创建Bean的地方，由createBeanInstance来完成
 		if (instanceWrapper == null) {
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
@@ -558,8 +559,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			// -------------------------------    2    -----------------------------------
+			// 装配bean的属性
 			populateBean(beanName, mbd, instanceWrapper);
 			if (exposedObject != null) {
+				// -------------------------------    3    -----------------------------------
+				// init-method、InitializingBean接口、BeanPostProcessor接口
 				exposedObject = initializeBean(beanName, exposedObject, mbd);
 			}
 		}
@@ -1289,6 +1294,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				for (BeanPostProcessor bp : getBeanPostProcessors()) {
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
 						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+						// AutowiredAnnotationBeanPostProcessor，其中包括了对@Autowired的属性注入
 						pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
 						if (pvs == null) {
 							return;

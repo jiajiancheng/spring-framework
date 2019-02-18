@@ -2,14 +2,12 @@ package com.jjc.test;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class MyTestBean implements InitializingBean {
 
     private String name;
     private Date birthday;
-    private LocalDate createDate;
 
     public void init(){
         name = "init";
@@ -37,11 +35,4 @@ public class MyTestBean implements InitializingBean {
         this.birthday = birthday;
     }
 
-    public LocalDate getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
-    }
 }

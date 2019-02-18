@@ -4,11 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="myTestBean" class="com.jjc.test.MyTestBean" init-method="init">
+    <bean id="myTestBean" class="com.jjc.test.MyTestBean">
         <property name="name" value="test"/>
         <!--<property name="birthday" value="2018-11-19"/>-->
         <!--<property name="createDate" value="2018-11-19"/>-->
     </bean>
+
+    <bean class="com.jjc.test.beanpostprocessor.BeanPostProcessorTest"/>
 
     <bean id="userDao" class="com.jjc.test.dao.impl.UserDaoImpl"/>
 

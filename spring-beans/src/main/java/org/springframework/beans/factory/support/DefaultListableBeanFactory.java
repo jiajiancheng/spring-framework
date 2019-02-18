@@ -732,11 +732,19 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		/*
 		 * 在这里就开始getBean，也就是去触发Bean的依赖注入。
-		 * 这个getBean和前面分析的触发依赖注入的过程是一样的，
-		 * 只是发生的地方不同。如果不设置lazy-init属性，那么这个依赖注入是发生在容器初始化结束以后。
+		 * 这个getBean和前面分析的触发依赖注入的过程是一样的，只是发生的地方不同。
+		 * 如果不设置lazy-init属性，默认是false，那么这个依赖注入是发生在容器初始化结束以后。
 		 * 第一次向容器发出getBean时，如果设置了lazy-init属性，那么依赖注入发生在容器初始化的过程中，
 		 * 会对beanDefinitionMap中所有的Bean进行依赖注入，这样在初始化过程结束以后，容器执行getBean得到的就是已经准备好的Bean，
 		 * 不需要进行依赖注入
+		 */
+
+		/*
+	     * 官网机翻，https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-factory-lazy-init
+		 * 默认情况下，ApplicationContext实现会急切地创建和配置所有 单例 bean，作为初始化过程的一部分。
+		 * 通常，这种预先实例化是可取的，因为配置或周围环境中的错误是立即发现的，而不是几小时甚至几天后。
+		 * 当不希望出现这种情况时，可以通过将bean定义标记为延迟初始化来阻止单例bean的预实例化。
+		 * 延迟初始化的bean告诉IoC容器在第一次请求时创建bean实例，而不是在启动时。
 		 */
 
 		// Iterate over a copy to allow for init methods which in turn register new bean definitions.

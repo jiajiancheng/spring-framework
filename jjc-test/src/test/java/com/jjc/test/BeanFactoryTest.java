@@ -1,9 +1,9 @@
 package com.jjc.test;
 
 import com.jjc.test.service.UserService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class BeanFactoryTest {
@@ -19,16 +19,25 @@ public class BeanFactoryTest {
 //        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 //        reader.loadBeanDefinitions(resource);
 
-        MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
-        Assert.assertEquals(myTestBean.getName(), "init");
+//        MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
+//        Assert.assertEquals(myTestBean.getName(), "init");
 //        Assert.assertEquals(myTestBean.getBirthday(), DateUtils.toDate(LocalDate.of(2018, 11, 19)));
-//        Assert.assertEquals(myTestBean.getCreateDate(), LocalDate.of(2018, 11, 19));
     }
 
     @Test
     public void testAddUser(){
         BeanFactory beanFactory = new FileSystemXmlApplicationContext("K:\\workspace\\study\\spring-framework\\jjc-test\\src\\main\\resources\\com\\jjc\\test\\beanFactoryTest.xml");
+        System.out.println("init ioc container");
         UserService userService = (UserService) beanFactory.getBean("userService");
+        System.out.println("get bean");
+    }
+
+    @Test
+    public void testAnnotation(){
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:com/jjc/test/component-scan.xml");
+        System.out.println("init ioc container");
+        UserService userService = beanFactory.getBean(UserService.class);
+        System.out.println("get bean");
         userService.add(null);
     }
 

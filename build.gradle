@@ -249,6 +249,7 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 		options.header = project.name
 		options.links(project.ext.javadocLinks)
 		options.addStringOption('Xdoclint:none', '-quiet')
+		options.encoding = "utf-8"
 
 		// Suppress warnings due to cross-module @see and @link references.
 		// Note that global 'api' task does display all warnings.
@@ -1129,8 +1130,12 @@ project("spring-framework-bom") {
 }
 
 project("jjc-test") {
+	
 	dependencies {
 		compile(project(":spring-beans"))
+		compile(project(":spring-context"))
+		
+		testCompile(project(":spring-beans"))
 		testCompile(project(":spring-context"))
 		testCompile("junit:junit:${junitVersion}")
 	}
@@ -1213,6 +1218,7 @@ configure(rootProject) {
 		group = "Documentation"
 		description = "Generates aggregated Javadoc API documentation."
 		title = "${rootProject.description} ${version} API"
+		options.encoding = "utf-8"
 
 		dependsOn {
 			subprojects.collect {
@@ -1279,14 +1285,14 @@ configure(rootProject) {
 			def Properties schemas = new Properties();
 
 			subproject.sourceSets.main.resources.find {
-				it.path.endsWith("META-INF/spring.schemas")
+				it.path.endsWith("META-INF\\spring.schemas")
 			}?.withInputStream { schemas.load(it) }
 
 			for (def key : schemas.keySet()) {
 				def shortName = key.replaceAll(/http.*schema.(.*).spring-.*/, '$1')
 				assert shortName != key
 				File xsdFile = subproject.sourceSets.main.resources.find {
-					it.path.endsWith(schemas.get(key))
+					it.path.endsWith(schemas.get(key).replaceAll('\\/','\\\\'))
 				}
 				assert xsdFile != null
 				into (shortName) {
