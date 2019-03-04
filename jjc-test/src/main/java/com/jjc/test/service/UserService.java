@@ -6,4 +6,6 @@ public interface UserService {
 
     void add(UserVo user);
 
+    void sayHello();
+
 }

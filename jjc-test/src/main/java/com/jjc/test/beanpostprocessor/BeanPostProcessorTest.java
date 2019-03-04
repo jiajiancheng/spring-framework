@@ -9,13 +9,13 @@ public class BeanPostProcessorTest implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.printf("postProcessBeforeInitialization, bean:%s, beanName:%s\n", bean.toString(), beanName);
+//        System.out.printf("postProcessBeforeInitialization, bean:%s, beanName:%s\n", bean.toString(), beanName);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.printf("postProcessAfterInitialization, bean:%s, beanName:%s\n", bean.toString(), beanName);
+//        System.out.printf("postProcessAfterInitialization, bean:%s, beanName:%s\n", bean.toString(), beanName);
         return bean;
     }
 }

@@ -46,8 +46,21 @@ import org.springframework.aop.SpringProxy;
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
+	/**
+	 * 1、对类生成代理使用CGLIB
+	 * 2、对接口生成代理使用JDK原生的Proxy
+	 * 3、可以通过配置文件指定对接口使用CGLIB生成代理
+	 *
+	 * @param config the AOP configuration in the form of an
+	 * AdvisedSupport object
+	 * @return
+	 * @throws AopConfigException
+	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+		// 1、ProxyConfig的isOptimize方法为true，这表示让Spring自己去优化而不是用户指定
+		// 2、ProxyConfig的isProxyTargetClass方法为true，这表示配置了proxy-target-class="true"
+		// 3、ProxyConfig满足hasNoUserSuppliedProxyInterfaces方法执行结果为true，这表示<bean>对象没有实现任何接口或者实现的接口是SpringProxy接口
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {

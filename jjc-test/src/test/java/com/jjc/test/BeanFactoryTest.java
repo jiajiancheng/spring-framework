@@ -1,8 +1,10 @@
 package com.jjc.test;
 
 import com.jjc.test.service.UserService;
+import com.jjc.test.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -38,6 +40,13 @@ public class BeanFactoryTest {
         System.out.println("init ioc container");
         UserService userService = beanFactory.getBean(UserService.class);
         System.out.println("get bean");
+        userService.add(null);
+    }
+
+    @Test
+    public void testAop(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("com/jjc/test/spring-aop.xml");
+        UserService userService = context.getBean(UserService.class);
         userService.add(null);
     }
 
