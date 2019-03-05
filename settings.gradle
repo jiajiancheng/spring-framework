@@ -30,4 +30,5 @@ include "spring-framework-bom"
 include "buildSrc"
 rootProject.children.find{ it.name == "buildSrc" }.name = "spring-build-src"
 include 'jjc-test'
+include 'jjc-web-test'
 

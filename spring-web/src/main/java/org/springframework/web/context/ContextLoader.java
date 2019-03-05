@@ -281,6 +281,8 @@ public class ContextLoader {
 
 
 	/**
+	 * 这里开始对WebApplicationContext进行初始化
+	 *
 	 * Initialize Spring's web application context for the given servlet context,
 	 * using the application context provided at construction time, or creating a new one
 	 * according to the "{@link #CONTEXT_CLASS_PARAM contextClass}" and
@@ -292,6 +294,7 @@ public class ContextLoader {
 	 * @see #CONFIG_LOCATION_PARAM
 	 */
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
+		// 判断在ServletContext中是否已经有根上下文存在
 		if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
 			throw new IllegalStateException(
 					"Cannot initialize context because there is already a root application context present - " +
@@ -306,6 +309,9 @@ public class ContextLoader {
 		long startTime = System.currentTimeMillis();
 
 		try {
+			// 这里创建在ServletContext中存储的根上下文ROOT_WEB_APPLICATION_CONTEXT,同时把它存到ServletContext中去,
+			// 注意这里使用的ServletContext的属性值是ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE，以后的应用都是根据这个属性值取得根上下文的
+			//
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
 			if (this.context == null) {
@@ -371,11 +377,13 @@ public class ContextLoader {
 	 * @see ConfigurableWebApplicationContext
 	 */
 	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+		// 这里判断使用什么样的类在Web容器中作为IoC容器
 		Class<?> contextClass = determineContextClass(sc);
 		if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
 			throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
 					"] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
 		}
+		// 直接实例化需要产生的IoC容器，并设置IoC容器的各个参数，然后通过refresh启动容器的初始化
 		return (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
 	}
 
@@ -388,7 +396,10 @@ public class ContextLoader {
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext
 	 */
 	protected Class<?> determineContextClass(ServletContext servletContext) {
+		// 这里读取在ServletContext中对CONTEXT_CLASS_PARAM参数的配置
 		String contextClassName = servletContext.getInitParameter(CONTEXT_CLASS_PARAM);
+		// 如果在ServletContext中配置了需要使用的CONTEXT_CLASS,那就使用这个class,
+		// 当然前提是这个class是可用的
 		if (contextClassName != null) {
 			try {
 				return ClassUtils.forName(contextClassName, ClassUtils.getDefaultClassLoader());
@@ -399,6 +410,7 @@ public class ContextLoader {
 			}
 		}
 		else {
+			// 如果没有额外的配置，那么使用默认的ContextClass
 			contextClassName = defaultStrategies.getProperty(WebApplicationContext.class.getName());
 			try {
 				return ClassUtils.forName(contextClassName, ContextLoader.class.getClassLoader());

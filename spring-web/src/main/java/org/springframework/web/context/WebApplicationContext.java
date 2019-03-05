@@ -44,6 +44,8 @@ import org.springframework.context.ApplicationContext;
 public interface WebApplicationContext extends ApplicationContext {
 
 	/**
+	 * 这里定义的常量用于在ServletContext中存取根上下文<br/>
+	 *
 	 * Context attribute to bind root WebApplicationContext to on successful startup.
 	 * <p>Note: If the startup of the root context fails, this attribute can contain
 	 * an exception or error as value. Use WebApplicationContextUtils for convenient
@@ -103,6 +105,8 @@ public interface WebApplicationContext extends ApplicationContext {
 
 
 	/**
+	 * 对WebApplicationContext来说，需要得到Web容器的ServletContext，通过这个方法可以取得Web容器的ServletContext<br/>
+	 *
 	 * Return the standard Servlet API ServletContext for this application.
 	 * <p>Also available for a Portlet application, in addition to the PortletContext.
 	 */

@@ -491,6 +491,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
+			// 这里初始化上下文
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}
@@ -549,6 +550,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			wac = findWebApplicationContext();
 		}
 		if (wac == null) {
+			// 创建DispatcherServlet中的IoC容器
 			// No context instance is defined for this servlet -> create a local one
 			wac = createWebApplicationContext(rootContext);
 		}
@@ -597,6 +599,11 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 	/**
+	 * 创建DispatcherServlet中的IoC容器，这个IoC容器是根上下文的子容器。
+	 * 这样的设置，使得对具体的一个Bean定义查找过程来说，如果要查找一个由DispatcherServlet所在的IoC容器来管理的Bean，
+	 * 系统会首先到根上下文中去查找。
+	 * 如果查找不到，才会到DispatcherServlet所管理的IoC容器去进行查找，这是由IoC容器getBean的实现来决定的。
+	 *
 	 * Instantiate the WebApplicationContext for this servlet, either a default
 	 * {@link org.springframework.web.context.support.XmlWebApplicationContext}
 	 * or a {@link #setContextClass custom context class}, if set.
@@ -624,13 +631,18 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 					"': custom WebApplicationContext class [" + contextClass.getName() +
 					"] is not of type ConfigurableWebApplicationContext");
 		}
+		// 实例化需要的具体上下文对象，并为这个上下文对象设置属性
+		// 这里使用的是DEFAULT_CONTEXT_CLASS，这个DEFAULT_CONTEXT_CLASS被设置为XmlWebApplicationContext.class，
+		// 所以在DispatcherServlet中使用的IoC容器是XmlWebApplicationContext
 		ConfigurableWebApplicationContext wac =
 				(ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
 
 		wac.setEnvironment(getEnvironment());
+		// 这里配置的双亲上下文，就是在ContextLoader中建立的根上下文
 		wac.setParent(parent);
 		wac.setConfigLocation(getContextConfigLocation());
 
+		// 设置ServletContext的引用和其他相关的配置信息
 		configureAndRefreshWebApplicationContext(wac);
 
 		return wac;
@@ -665,6 +677,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		postProcessWebApplicationContext(wac);
 		applyInitializers(wac);
+		// 这里同样是通过refresh来调用容器的初始化过程的
 		wac.refresh();
 	}
 
