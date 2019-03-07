@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
 
-    <!-- 字符集 过滤器 -->
+<!--
+    &lt;!&ndash; 字符集 过滤器 &ndash;&gt;
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -19,23 +20,24 @@
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+-->
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+    <!--</listener>-->
 
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>
-    </context-param>
+    <!--<context-param>-->
+        <!--<param-name>contextConfigLocation</param-name>-->
+        <!--<param-value>classpath:applicationContext.xml</param-value>-->
+    <!--</context-param>-->
 
     <servlet>
         <servlet-name>jjc-web-test</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <!--<param-value>classpath:applicationContext.xml</param-value>-->
-            <param-value></param-value>
+            <param-value>classpath:applicationContext.xml</param-value>
+            <!--<param-value></param-value>-->
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -43,6 +45,17 @@
     <servlet-mapping>
         <servlet-name>jjc-web-test</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>com.jjc.test.web.servlet.LoginServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/servlet/login</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -5,4 +5,5 @@ gradlew build -x test
 File -> Invalidate Caches / Restart
 
 gradlew -a :spring-webmvc:test
+
 gradlew -a :jjc-web-test:test
