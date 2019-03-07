@@ -1,5 +1,6 @@
 package com.jjc.test.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class SubmitController {
 
     public static final Log LOG = LogFactory.getLog(SubmitController.class);
 
-    @RequestMapping(value = "submit", method = RequestMethod.POST)
+    @RequestMapping(value = "submit", method = RequestMethod.GET)
     public String submit(RedirectAttributes ra){
 
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -33,8 +34,8 @@ public class SubmitController {
 
     @RequestMapping(value = "showorders", method = RequestMethod.GET)
     public String showOrders(Model model){
-//        LOG.info();
-        return "orders";
+        LOG.info(JSON.toJSONString(model));
+        return "orders.jsp";
     }
 
 }
