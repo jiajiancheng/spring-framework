@@ -948,7 +948,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
-				// 根据request找到handler
+				// 1、根据request找到handler
 				// Determine handler for the current request.
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null || mappedHandler.getHandler() == null) {
@@ -956,7 +956,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// 根据handler找到handlerAdapter
+				// 2、根据handler找到handlerAdapter
 				// Determine handler adapter for the current request.
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
@@ -978,7 +978,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// HandlerAdapter是用Handler处理请求
+				// 3、HandlerAdapter是用Handler处理请求
 				// Actually invoke the handler.
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
@@ -999,7 +999,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
-			// 处理返回结果。包括异常处理、渲染页面、发出完成通知触发Interceptor的afterCompletion
+			// 4、处理返回结果。包括异常处理、渲染页面、发出完成通知触发Interceptor的afterCompletion
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1043,6 +1043,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		boolean errorView = false;
 
+		// 如果请求处理的过程中有异常则处理异常
 		if (exception != null) {
 			if (exception instanceof ModelAndViewDefiningException) {
 				logger.debug("ModelAndViewDefiningException encountered", exception);
@@ -1075,6 +1076,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			return;
 		}
 
+		// 发出请求处理完成的通知，触发Interceptor的afterCompletion
 		if (mappedHandler != null) {
 			mappedHandler.triggerAfterCompletion(request, response, null);
 		}

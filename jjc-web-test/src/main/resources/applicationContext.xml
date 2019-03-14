@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/mvc
@@ -11,7 +11,7 @@
     <mvc:annotation-driven/>
     <context:component-scan base-package="com.jjc.test"/>
 
-    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/views/"
           p:suffix=".jsp"
     />
@@ -24,6 +24,6 @@
                 /login=loginController
             </value>
         </property>
-    </bean>-->
+    </bean>
 
 </beans>
