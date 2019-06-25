@@ -1,28 +1,30 @@
 package com.jjc.test;
 
 import com.jjc.test.service.UserService;
-import com.jjc.test.service.impl.UserServiceImpl;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
 public class BeanFactoryTest {
 
     @Test
     public void testSimpleLoad() {
 //        BeanFactory beanFactory = new ClassPathXmlApplicationContext("com/jjc/test/beanFactoryTest.xml");
-        BeanFactory beanFactory = new FileSystemXmlApplicationContext("K:\\workspace\\study\\spring-framework\\jjc-test\\src\\main\\resources\\com\\jjc\\test\\beanFactoryTest.xml");
-//        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
+//        BeanFactory beanFactory = new FileSystemXmlApplicationContext("K:\\workspace\\study\\spring-framework\\jjc-test\\src\\main\\resources\\com\\jjc\\test\\beanFactoryTest.xml");
+        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("com/jjc/test/beanFactoryTest.xml"));
 
 //        ClassPathResource resource = new ClassPathResource("importTest.xml");
 //        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 //        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 //        reader.loadBeanDefinitions(resource);
 
-//        MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
-//        Assert.assertEquals(myTestBean.getName(), "init");
+        MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
+        Assert.assertEquals(myTestBean.getName(), "test");
 //        Assert.assertEquals(myTestBean.getBirthday(), DateUtils.toDate(LocalDate.of(2018, 11, 19)));
     }
 
