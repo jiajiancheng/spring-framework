@@ -9,6 +9,10 @@ public class MyTestBean implements InitializingBean {
     private String name;
     private Date birthday;
 
+    public MyTestBean() {
+        System.out.println("init MyTestBean");
+    }
+
     public void init(){
         name = "init";
         System.out.println("init-method");

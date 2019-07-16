@@ -104,6 +104,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		// 初始化Spring IOC容器，使用的是满足ApplicationContext接口的Spring Web Ioc容器
 		initWebApplicationContext(event.getServletContext());
 	}
 
