@@ -3,7 +3,7 @@ package com.jjc.test.aop;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
-public class LogAspect {
+public class LogTestAspect {
 
     public void doBefore(JoinPoint jp) {
         System.out.println("do before");

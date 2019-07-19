@@ -50,4 +50,14 @@ public class BeanFactoryTest {
         userService.add(null);
     }
 
+    /**
+     * 注解的形式
+     */
+    @Test
+    public void testAop2(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("com/jjc/test/spring-aop2.xml");
+        UserService userService = context.getBean(UserService.class);
+        userService.add(null);
+    }
+
 }
