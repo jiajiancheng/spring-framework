@@ -1,6 +1,5 @@
 package com.jjc.test.aop;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -22,11 +21,8 @@ public class LogTestAspectConfig {
     }
 
     @Before("logTestPointcut()")
-    public void beforeTask(JoinPoint joinPoint){
-        System.out.println(logTestAspect());
-        System.out.println(logTestAspect());
-        logTestAspect().doBefore(joinPoint);
-        logTestAspect().doBefore(joinPoint);
+    public void beforeTask(){
+        logTestAspect().doBefore();
     }
 
 }

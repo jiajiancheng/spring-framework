@@ -16,20 +16,10 @@
 
 package org.springframework.aop.framework;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.Interceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.adapter.AdvisorAdapterRegistry;
@@ -37,16 +27,15 @@ import org.springframework.aop.framework.adapter.GlobalAdvisorAdapterRegistry;
 import org.springframework.aop.framework.adapter.UnknownAdviceTypeException;
 import org.springframework.aop.target.SingletonTargetSource;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.FactoryBeanNotInitializedException;
-import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.*;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * {@link org.springframework.beans.factory.FactoryBean} implementation that builds an
@@ -241,6 +230,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	 */
 	@Override
 	public Object getObject() throws BeansException {
+		// 初始化通知器链
 		initializeAdvisorChain();
 		if (isSingleton()) {
 			return getSingletonInstance();

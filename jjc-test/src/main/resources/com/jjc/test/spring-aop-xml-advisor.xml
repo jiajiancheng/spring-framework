@@ -10,15 +10,13 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.jjc"/>
+    <context:component-scan base-package="com.jjc.test.service, com.jjc.test.dao"/>
 
-    <bean id="logTestAspect" class="com.jjc.test.aop.LogTestAspect"/>
+    <bean id="logTestAdvice" class="com.jjc.test.aop.LogTestAdvice"/>
 
     <aop:config>
         <aop:pointcut id="logPointcut" expression="execution(* com.jjc.test.service.*.*(..))"/>
-        <aop:aspect ref="logTestAspect">
-            <aop:before method="doBefore" pointcut-ref="logPointcut"/>
-        </aop:aspect>
+        <aop:advisor advice-ref="logTestAdvice" pointcut-ref="logPointcut"/>
     </aop:config>
 
 </beans>

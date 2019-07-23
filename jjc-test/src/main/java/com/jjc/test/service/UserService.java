@@ -8,4 +8,5 @@ public interface UserService {
 
     void sayHello();
 
+    void sayHello2();
 }

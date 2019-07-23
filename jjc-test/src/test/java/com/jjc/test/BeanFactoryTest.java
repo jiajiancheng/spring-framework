@@ -4,7 +4,6 @@ import com.jjc.test.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -40,23 +39,6 @@ public class BeanFactoryTest {
         System.out.println("init ioc container");
         UserService userService = beanFactory.getBean(UserService.class);
         System.out.println("get bean");
-        userService.add(null);
-    }
-
-    @Test
-    public void testAop(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("com/jjc/test/spring-aop.xml");
-        UserService userService = context.getBean(UserService.class);
-        userService.add(null);
-    }
-
-    /**
-     * 注解的形式
-     */
-    @Test
-    public void testAop2(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("com/jjc/test/spring-aop2.xml");
-        UserService userService = context.getBean(UserService.class);
         userService.add(null);
     }
 
