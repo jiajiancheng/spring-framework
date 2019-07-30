@@ -151,18 +151,20 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	@Override
 	public Object proceed() throws Throwable {
-		// 执行完所有增强后执行切点方法
+		// 从索引为-1的拦截器开始调用，并按序递增
+		// 如果拦截器链中的拦截器迭代调用完毕，这里开始调用target函数，这个函数是通过
+		// 反射机制完成的，具体实现在AopUtils.invokeJoinpointUsingReflection方法中
 		//	We start with an index of -1 and increment early.
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
 			return invokeJoinpoint();
 		}
 
-		// 获取下一个要执行的拦截器，计数器+1
+		// 这里延用定义好的interceptorOrInterceptionAdvice链进行处理
 		Object interceptorOrInterceptionAdvice =
 				this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
 
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
-			// 动态匹配
+			// 这里对拦截器进行动态匹配的判断，这里是触发进行匹配的地方，如果和定义的Pointcut匹配，那么这个advice将会得到执行
 			// Evaluate dynamic method matcher here: static part will already have
 			// been evaluated and found to match.
 			InterceptorAndDynamicMethodMatcher dm =
@@ -171,14 +173,14 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 				return dm.interceptor.invoke(this);
 			}
 			else {
-				// 匹配失败
+				// 如果不匹配，那么proceed会被递归调用，直到所有拦截器都被运行过为止
 				// Dynamic matching failed.
 				// Skip this interceptor and invoke the next in the chain.
 				return proceed();
 			}
 		}
 		else {
-			// 普通拦截器，直接调用拦截器
+			// 如果是一个interceptor，直接调用这个interceptor对应的方法
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
